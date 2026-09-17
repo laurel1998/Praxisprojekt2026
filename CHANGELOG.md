@@ -9,6 +9,8 @@ Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records
 - [04-ADR:](/docs/ADR/04-adr-risc-score.md) Heuristischer Risk Score
   - [Bewertungskatalog](/docs/ADR/Artefakte/04-Bewertungskatalog.png) mit konkreten Schwellenwerten
   - [Risk Score](/docs/ADR/Artefakte/04-RiskScore.png) mit Bewertungslogik
+### Bearbeitet
+- [PoC zum Visualisierungskonzept](/docs/PoC/03-poc-visualisierung.md)
 
 
 
@@ -27,7 +29,6 @@ Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records
 - YouTube Data API v3 eingerichtet und getestet (03.08.2026)
 - Zugriff auf öffentliche Videodaten & Kommentardaten erfolgreich validiert (04.08.2026)
 - Auswirkungen auf folgende Dateien:
-
 ### Bearbeitet
 - [PoC zur Datenerfassung](/docs/PoC/01-poc-datenerfassung.md) 
 - [01-ADR:](/docs/ADR/01-adr-plattformwahl.md) Datenerfassung
