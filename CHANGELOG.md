@@ -9,8 +9,9 @@ Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records
 - [04-ADR:](/docs/ADR/04-adr-risc-score.md) Heuristischer Risk Score
   - [Bewertungskatalog](/docs/ADR/Artefakte/04-Bewertungskatalog.png) mit konkreten Schwellenwerten
   - [Risk Score](/docs/ADR/Artefakte/04-RiskScore.png) mit Bewertungslogik
+- [05-ADR:](/docs/ADR/05-adr-visualisierungskonzept.md) Visualisierungskonzept
 ### Bearbeitet
-- [PoC zum Visualisierungskonzept](/docs/PoC/03-poc-visualisierung.md)
+- [PoC zur Visualisierung](/docs/PoC/03-poc-visualisierung.md)
 
 
 

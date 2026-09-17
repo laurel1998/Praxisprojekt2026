@@ -1,4 +1,4 @@
-# 03-PoC: Visualisierung im Nutzungskontext
+# 03-PoC: Visualisierung
 
 **Status:** Done
 
