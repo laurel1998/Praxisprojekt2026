@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records)](docs/ADR/) dokumentiert.
 
 
+## [0.11.0] – 17.09.2026
+### Hinzugefügt
+- [04-ADR:](/docs/ADR/04-adr-risc-score.md) Heuristischer Risk Score
+  - [Bewertungskatalog](/docs/ADR/Artefakte/04-Bewertungskatalog.png) mit konkreten Schwellenwerten
+  - [Risk Score](/docs/ADR/Artefakte/04-RiskScore.png) mit Bewertungslogik
+
+
+
 ## [0.10.0] – 12.08.2026
 ### Hinzugefügt
 - [03-ADR:](/docs/ADR/03-adr-merkmalsmodell.md) Merkmalsmodell
