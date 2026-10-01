@@ -3,6 +3,14 @@
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records)](docs/ADR/) dokumentiert.
 
+## [1.0.0] – 1.10.2026
+### Hinzugefügt
+- Browser-Extension zum Testen implementiert (V1 - [Prototyp](/prototype/extension/))
+  - Erkennung des YouTube-Kommentarbereichs 
+  - Auslesen der Video-ID
+  - Einbindung eines Beispiel-Popups
+
+
 
 ## [0.11.0] – 17.09.2026
 ### Hinzugefügt

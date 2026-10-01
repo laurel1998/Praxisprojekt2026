@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Risk Score Prototype",
+  "version": "0.1.0",
+  "description": "Prototype for detecting and visualizing potentially automated comments.",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
