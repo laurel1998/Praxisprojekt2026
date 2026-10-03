@@ -40,10 +40,62 @@ function sendCommentToBackend(videoId, commentId) {
             console.log("IDs gleich:", commentId === data.id);
 
             console.log("Kommentar:", data);
+
+             if (commentId === data.id) {
+                addTestPoint(commentId, data.testScore);
+             }
         })
         .catch(error => {
             console.error("Fehler beim Laden des Kommentars:", error);
         });
+}
+
+function getTestColor(score) {
+    if (score === 0) {
+        return "green";
+    }
+    if (score === 1) {
+        return "orange";
+    }
+    return "red";
+}
+
+function addTestPoint(commentId, score) {
+    const comments = document.querySelectorAll(
+        "ytd-comment-thread-renderer"
+    );
+
+    comments.forEach(comment => {
+        const currentCommentId = getCommentId(comment);
+
+        if (currentCommentId !== commentId) {
+            return;
+        }
+        if (comment.querySelector(".risk-score-test-point")) {
+            return;
+        }
+
+        const testPoint = document.createElement("span");
+
+        testPoint.className = "risk-score-test-point";
+        testPoint.textContent = "●";
+        testPoint.style.color = getTestColor(score);
+        testPoint.style.fontSize = "16px";
+        testPoint.style.marginRight = "8px";
+
+        const commentContent = comment.querySelector("#content-text");
+
+        if (commentContent) {
+            commentContent.prepend(testPoint);
+        }
+
+        console.log(
+            "Testpunkt eingefügt:",
+            commentId,
+            "Score:",
+            score
+        );
+    });
 }
 
 function observeCommentSection(commentSection) {

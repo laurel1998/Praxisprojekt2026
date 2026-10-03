@@ -4,9 +4,17 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records)](docs/ADR/) dokumentiert.
 
 
+## [1.2.0] – 3.10.2026
+### Bearbeitet
+- V3 - [Prototyp](/prototype/): 
+  - [Kommunikation](/docs/PoC/Artefakte/TestderKommunikation.png) zwischen Browser Extension und Backend integriert
+  - [Visualisierung](/docs/PoC/Artefakte/TestpunktmitZuordnungsbeweis.png) eines vom Backend gelieferten Test-Scores in der Browser Extension
+
+
+
 ## [1.1.0] – 2.10.2026
 ### Hinzugefügt
-- Spring Boot Applikation als Backend integriert (V1 - [Prototyp](/prototype/backend/))
+- Spring Boot Applikation als Backend integriert (V2 - [Prototyp](/prototype/backend/))
   - YouTube API Integration 
   - Auslesen und Aufbereiten von Kommentarinformationen
 

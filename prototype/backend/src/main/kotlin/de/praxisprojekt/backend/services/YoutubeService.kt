@@ -15,6 +15,17 @@ class YouTubeService {
     private val apiKey = System.getenv("YOUTUBE_API_KEY")
         ?: throw IllegalStateException("YOUTUBE_API_KEY ist nicht gesetzt")
 
+    private fun getTestScore(commentId: String): Int {
+        
+        val digits = commentId.filter { it.isDigit() }.toSet()
+
+        return when {
+            '7' in digits -> 2
+            digits.size > 1 -> 1
+            else -> 0
+        }
+    }
+    
     fun getComments(videoId: String): List<Kommentar> {
 
         val response = restClient.get()
@@ -46,7 +57,8 @@ class YouTubeService {
                     likeCount = commentSnippet["likeCount"].asInt(),
                     publishedAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                         .parse(commentSnippet["publishedAt"].asText()),
-                    totalReplyCount = snippet["totalReplyCount"].asInt()
+                    totalReplyCount = snippet["totalReplyCount"].asInt(),
+                    testScore = getTestScore(comment["id"].asText())
                 )
             )
         }
@@ -79,7 +91,8 @@ class YouTubeService {
             likeCount = snippet["likeCount"].asInt(),
             publishedAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                 .parse(snippet["publishedAt"].asText()),
-            totalReplyCount = 0
+            totalReplyCount = 0,
+            testScore = getTestScore(item["id"].asText())
         )
     }
 }
