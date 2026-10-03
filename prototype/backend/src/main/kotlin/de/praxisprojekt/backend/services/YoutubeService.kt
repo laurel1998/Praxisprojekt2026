@@ -11,11 +11,11 @@ class YouTubeService {
 
     private val restClient = RestClient.create()
     private val objectMapper = ObjectMapper()
+    
+    private val apiKey = System.getenv("YOUTUBE_API_KEY")
+        ?: throw IllegalStateException("YOUTUBE_API_KEY ist nicht gesetzt")
 
     fun getComments(videoId: String): List<Kommentar> {
-
-        val apiKey = System.getenv("YOUTUBE_API_KEY")
-            ?: throw IllegalStateException("YOUTUBE_API_KEY ist nicht gesetzt")
 
         val response = restClient.get()
             .uri("https://www.googleapis.com/youtube/v3/commentThreads") {
@@ -51,5 +51,35 @@ class YouTubeService {
             )
         }
         return comments
+    }
+    
+    fun getComment(videoId: String, commentId: String): Kommentar {
+
+        val response = restClient.get()
+            .uri("https://www.googleapis.com/youtube/v3/comments") {
+                it.queryParam("part", "snippet")
+                    .queryParam("id", commentId)
+                    .queryParam("key", apiKey)
+                    .build()
+            }
+            .retrieve()
+            .body(String::class.java)
+            ?: throw IllegalStateException("Keine Antwort von der YouTube API")
+
+        println(response)
+
+        val item = objectMapper.readTree(response)["items"][0]
+        val snippet = item["snippet"]
+
+        return Kommentar(
+            id = item["id"].asText(),
+            videoId = videoId,
+            authorChannelId = snippet["authorChannelId"]["value"].asText(),
+            text = snippet["textOriginal"].asText(),
+            likeCount = snippet["likeCount"].asInt(),
+            publishedAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                .parse(snippet["publishedAt"].asText()),
+            totalReplyCount = 0
+        )
     }
 }

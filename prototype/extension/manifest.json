@@ -11,5 +11,9 @@
       "matches": ["https://www.youtube.com/*"],
       "js": ["content.js"]
     }
+  ],
+  
+  "host_permissions": [
+    "http://localhost:8080/*"
   ]
 }
