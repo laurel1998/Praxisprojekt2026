@@ -1,6 +1,6 @@
-# Praxisprojekt SoSe2026 – Analyse und Visualisierung automatisierter Interaktionen
+# Praxisprojekt 2026 – Analyse und Visualisierung automatisierter Interaktionen
 
-Willkommen im Repository **PraxisprojektSoSe2026**
+Willkommen im Repository **Praxisprojekt2026**
 
 Dieses Repository bildet die technische und organisatorische Grundlage des Praxisprojekts *„Analyse und Visualisierung automatisierter Interaktionen“*.
 Es dient der Dokumentation, Planung und Entwicklung eines prototypischen Analyse- und Visualisierungssystems für automatisierte Kommentarinteraktionen auf Social-Media-Plattformen.
@@ -63,12 +63,11 @@ Alle wesentlichen Entscheidungen, Änderungen und Erkenntnisse werden fortlaufen
 | [**`/docs/ADR/`**](docs/ADR/)                                         | Architecture Decision Records (ADRs)                         |
 | [**`/docs/Modelle/`**](docs/Modelle/)                                 | Architektur- und Domänenmodelle                              |
 | [**`/docs/Research-Notes/`**](docs/Research-Notes/)                   | Verzeichnis zur Dokumentation von Forschungsergebnissen      |
-| `/docs/PoC/`                                                          | Proof of Concepts (PoC)                                      |
-| `/docs/PoC/MVP.md`                                                    | Definition des Minimal Viable Product                        |
+| [**`/docs/PoC/`**](/docs/PoC/)                                        | Proof of Concepts (PoC)                                      |
+| [**`/docs/MVP.md`**](/docs/MVP.md)                                    | Definition des Minimal Viable Product                        |
 | [**`/docs/Expose_Praxisprojekt.pdf`**](docs/Expose_Praxisprojekt.pdf) | Exposé des Praxisprojekts                                    |
-| `/docs/Risikoanalyse.md`                                              | Risikoanalyse des Projekts                                   |
-| `/docs/User-Stories.md`                                               | User Stories und Nutzungsszenarien                           |
-| `/prototype/`                                                         | Prototypische Implementierung                                |
-| `/datasets/`                                                          | Testdaten und Beispieldatensätze                             |
+| [**`/docs/Risikoanalyse.md`**](/docs/Risikoanalyse.md)                | Risikoanalyse des Projekts                                   |
+| [**`/docs/User-Stories.md`**](/docs/User-Stories.md)                  | User Stories (Anforderungen)                                 |
+| [**`/prototype/`**](/prototype/)                                      | Prototypische Implementierung                                |
 | [**`CHANGELOG.md`**](./CHANGELOG.md)                                  | Verzeichnis aller Änderungen im Projektverlauf               |
 | [**`README.md`**](./README.md)                                        | Diese Datei - für Überblick und Orientierung                 |

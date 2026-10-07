@@ -67,6 +67,6 @@ Die Browser Extension ermöglicht die direkte Integration des farbigen Punktes i
 
 Die Farbcodierung ermöglicht eine schnelle Einordnung, zeigt jedoch nicht, wie sich der Risk Score zusammensetzt.
 
-Die Umsetzung als Browser-Extension ist von der technischen Struktur und dem Verhalten der YouTube-Webseite abhängig. Dynamisch nachgeladene Kommentare müssen erkannt und mit der Punkt-Visualisierung versehen werden. Darüber hinaus müssen die Kommunikation zwischen Extension und Backend sowie mögliche Verzögerungen oder Verbindungsfehler berücksichtigt werden.
+Die Umsetzung als Browser-Extension ist von der technischen Struktur und dem Verhalten der YouTube-Webseite abhängig. Dynamisch nachgeladene Kommentare müssen erkannt und mit der Punkt-Visualisierung versehen werden. Darüber hinaus müssen die [Kommunikation](/docs/PoC/Artefakte/TestderKommunikation.png) zwischen Extension und Backend sowie mögliche Verzögerungen oder Verbindungsfehler berücksichtigt werden.
 
 Die konkrete technische Umsetzung und der Umgang mit diesen Herausforderungen werden im [06-ADR: Systemarchitektur](/docs/ADR/06-adr-systemarchitektur.md) betrachtet.

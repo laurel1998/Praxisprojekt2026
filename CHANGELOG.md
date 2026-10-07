@@ -4,9 +4,16 @@ Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokument
 Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records)](docs/ADR/) dokumentiert.
 
 
+## [1.3.0] – 7.10.2026
+### Hinzugefügt
+- [06-ADR:](/docs/ADR/06-adr-systemarchitektur.md) Systemarchitektur und [Architekturmodell](/docs/Modelle/Systemarchitektur/Architekturmodell.V1.png)
+- [User Stories](/docs/User-Stories.md) als Konkretisierung der Anforderungen
+
+
+
 ## [1.2.0] – 3.10.2026
 ### Bearbeitet
-- V3 - [Prototyp](/prototype/): 
+- 0.3.0 - [Prototyp](/prototype/): 
   - [Kommunikation](/docs/PoC/Artefakte/TestderKommunikation.png) zwischen Browser Extension und Backend integriert
   - [Visualisierung](/docs/PoC/Artefakte/TestpunktmitZuordnungsbeweis.png) eines vom Backend gelieferten Test-Scores in der Browser Extension
 
@@ -14,7 +21,7 @@ Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records
 
 ## [1.1.0] – 2.10.2026
 ### Hinzugefügt
-- Spring Boot Applikation als Backend integriert (V2 - [Prototyp](/prototype/backend/))
+- Spring Boot Applikation als Backend integriert (0.2.0 - [Prototyp](/prototype/backend/))
   - YouTube API Integration 
   - Auslesen und Aufbereiten von Kommentarinformationen
 
@@ -22,7 +29,7 @@ Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records
 
 ## [1.0.0] – 1.10.2026
 ### Hinzugefügt
-- Browser-Extension zum Testen implementiert (V1 - [Prototyp](/prototype/extension/))
+- Browser-Extension zum Testen implementiert (0.1.0 - [Prototyp](/prototype/extension/))
   - Erkennung des YouTube-Kommentarbereichs 
   - Auslesen der Video-ID
   - Einbindung eines Beispiel-Popups

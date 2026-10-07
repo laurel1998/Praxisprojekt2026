@@ -85,7 +85,9 @@ Die [numerische Darstellung](/docs/PoC/Artefakte/03-Mockup_Numerisch.jpg) des Ri
 
 ## Entscheidungen / Konsequenzen
 
-Für das weitere Visualisierungskonzept wird die Darstellung als [farbiger Punkt auf Grundlage eines Ampelschemas](/docs/PoC/Artefakte/03-Beispielkommentar.png) verwendet. Die konkrete Festlegung der Farbbereiche wird im ADR zum Visualisierungskonzept getroffen.
+Für das weitere Visualisierungskonzept wird die Darstellung als [farbiger Punkt auf Grundlage eines Ampelschemas](/docs/PoC/Artefakte/03-Beispielkommentar.png) verwendet. Die konkrete Festlegung der Farbbereiche wird im ADR zum Visualisierungskonzept getroffen. 
+
+Die ausgewählte [Visualisierung](/docs/PoC/Artefakte/TestpunktmitZuordnungsbeweis.png) wurde mithilfe einer vereinfachten Berechnungslogik technisch umgesetzt und getestet.
 
 Eine klickbare Darstellung mit zusätzlichen Informationen zur Zusammensetzung des Risk Scores wird als Erweiterung für eine spätere Version vorgesehen.
 

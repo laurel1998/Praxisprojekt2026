@@ -27,7 +27,7 @@ Kommentarinteraktion → Datenerfassung → Merkmalsextraktion → Risk Score �
   * verhaltensbasierte Merkmale
   * koordinative Merkmale
 
-* Heuristische Bewertung: Berechnung eines einfachen Risk Scores auf Basis definierter Regeln und Gewichtungen
+* Heuristische Bewertung: Berechnung eines einfachen Risk Scores auf Basis definierter Regeln
 
 * Visualisierung: Darstellung der Analyseergebnisse direkt im Nutzungskontext (z. B. Ampelsystem oder Score-Indikator)
 
