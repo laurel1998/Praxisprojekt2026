@@ -1,13 +1,16 @@
 package de.praxisprojekt.backend.services
 
 import de.praxisprojekt.backend.models.Kommentar
+import de.praxisprojekt.backend.models.YoutubeChannel
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestClient
 import tools.jackson.databind.ObjectMapper
 import java.text.SimpleDateFormat
+import java.util.Date
+import java.time.Instant
 
 @Service
-class YouTubeService {
+class YoutubeService {
 
     private val restClient = RestClient.create()
     private val objectMapper = ObjectMapper()
@@ -94,5 +97,56 @@ class YouTubeService {
             totalReplyCount = 0,
             testScore = getTestScore(item["id"].asText())
         )
+    }
+    
+    fun getChannel(channelId: String): YoutubeChannel {
+
+        val response = restClient.get()
+            .uri("https://www.googleapis.com/youtube/v3/channels") {
+                it.queryParam("part", "snippet,statistics")
+                    .queryParam("id", channelId)
+                    .queryParam("key", apiKey)
+                    .build()
+            }
+            .retrieve()
+            .body(String::class.java)
+            ?: throw IllegalStateException("Keine Antwort von der YouTube API")
+
+        val item = objectMapper.readTree(response)["items"][0]
+
+        val publishedAt = Date.from(
+            Instant.parse(item["snippet"]["publishedAt"].asText())
+        )
+
+        val videoCount = item["statistics"]["videoCount"].asInt()
+        
+        val subscriberCount = item["statistics"]["subscriberCount"].asLong()
+        
+        val description = item["snippet"]["description"].asText()
+
+        return YoutubeChannel(
+            publishedAt = publishedAt,
+            videoCount = videoCount,
+            subscriberCount = subscriberCount,
+            description = description
+        )
+    }
+    
+    fun getVideoViewCount(videoId: String): Long {
+
+        val response = restClient.get()
+            .uri("https://www.googleapis.com/youtube/v3/videos") {
+                it.queryParam("part", "statistics")
+                    .queryParam("id", videoId)
+                    .queryParam("key", apiKey)
+                    .build()
+            }
+            .retrieve()
+            .body(String::class.java)
+            ?: throw IllegalStateException("Keine Antwort von der YouTube API")
+
+        val item = objectMapper.readTree(response)["items"][0]
+
+        return item["statistics"]["viewCount"].asLong()
     }
 }
