@@ -36,7 +36,7 @@ class YoutubeService {
                 it.queryParam("part", "snippet")
                     .queryParam("videoId", videoId)
                     .queryParam("key", apiKey)
-                    .queryParam("maxResults", 10)
+                    .queryParam("maxResults", 100)
                     .build()
             }
             .retrieve()

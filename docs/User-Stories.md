@@ -12,9 +12,9 @@ Die folgenden User Stories konkretisieren die funktionalen Anforderungen des MVP
 
 - U3: Als Nutzer:in möchte ich, dass die Bewertung anhand mehrerer Merkmale erfolgt, damit nicht ein einzelnes Merkmal allein über die Einschätzung entscheidet.
 
-- U4: Als Nutzer:in möchte ich, dass neu erfasste Kommentare in die Analyse einbezogen werden, damit während der Nutzung zusätzlicher Kontext berücksichtigt werden kann.
-
 ### SHOULD
+
+- U4: Als Nutzer:in möchte ich, dass neu erfasste Kommentare in die Analyse einbezogen werden, damit während der Nutzung zusätzlicher Kontext berücksichtigt werden kann.
 
 - U5: Als Nutzer:in möchte ich nachvollziehen können, wie die Bewertung zustande kommt, damit ich die Einschätzung besser einordnen kann.
 
