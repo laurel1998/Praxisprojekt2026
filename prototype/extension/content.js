@@ -18,32 +18,42 @@ function getCommentId(commentElement) {
 }
 
 function sendCommentToBackend(videoId, commentId) {
-    fetch(
-        `http://localhost:8080/api/youtube/comments?videoId=${encodeURIComponent(videoId)}`
-    )
-        .then(response => response.json())
-        .then(data => {
-            console.log("Backend-Antwort:", data);
+    
+    chrome.runtime.sendMessage({
+        type: "FETCH_COMMENTS",
+        videoId: videoId
+    })
+        .then(response => {
+            if (!response?.ok) {
+                throw new Error(response?.error || "Keine Backend-Antwort");
+            }
+
+            console.log("Backend-Antwort:", response.data);
         })
         .catch(error => {
-            console.error("Fehler beim Backend-Aufruf:", error);
+            console.error("Fehler beim Laden der Kommentare:", error);
         });
 
-    fetch(
-        `http://localhost:8080/api/youtube/comment?videoId=${encodeURIComponent(videoId)}&commentId=${encodeURIComponent(commentId)}`
-    )
-        .then(response => response.json())
-        .then(data => {
+    chrome.runtime.sendMessage({
+        type: "FETCH_COMMENT",
+        videoId: videoId,
+        commentId: commentId
+    })
+        .then(response => {
+            if (!response?.ok) {
+                throw new Error(response?.error || "Keine Backend-Antwort");
+            }
+
+            const data = response.data;
+
             console.log("Gesendet:", commentId);
             console.log("Erhalten:", data.id);
-            
             console.log("IDs gleich:", commentId === data.id);
-
             console.log("Kommentar:", data);
 
-             if (commentId === data.id) {
+            if (commentId === data.id) {
                 addTestPoint(commentId, data.testScore);
-             }
+            }
         })
         .catch(error => {
             console.error("Fehler beim Laden des Kommentars:", error);
