@@ -17,7 +17,19 @@ function getCommentId(commentElement) {
     return url.searchParams.get("lc");
 }
 
-function sendCommentToBackend(videoId, commentId) {
+function getDomParentId(commentElement) {
+    const parentReplies = commentElement.parentElement
+        ?.closest("ytd-comment-replies-renderer");
+
+    const parentComment = parentReplies?.parentElement
+        ?.closest("ytd-comment-thread-renderer");
+
+    if (!parentComment) return null;
+
+    return getCommentId(parentComment);
+}
+
+function sendCommentToBackend(videoId, commentId, domParentId) {
     
     chrome.runtime.sendMessage({
         type: "FETCH_COMMENTS",
@@ -37,7 +49,8 @@ function sendCommentToBackend(videoId, commentId) {
     chrome.runtime.sendMessage({
         type: "FETCH_COMMENT",
         videoId: videoId,
-        commentId: commentId
+        commentId: commentId,
+        domParentId: domParentId
     })
         .then(response => {
             if (!response?.ok) {
@@ -45,11 +58,6 @@ function sendCommentToBackend(videoId, commentId) {
             }
 
             const data = response.data;
-
-            console.log("Gesendet:", commentId);
-            console.log("Erhalten:", data.id);
-            console.log("IDs gleich:", commentId === data.id);
-            console.log("Kommentar:", data);
 
             if (commentId === data.id) {
                 addTestPoint(commentId, data.testScore);
@@ -120,9 +128,10 @@ function observeCommentSection(commentSection) {
 
         comments.forEach(comment => {
             const commentId = getCommentId(comment);
+            const domParentId = getDomParentId(comment);
+
             if (!commentId) {
                 console.log("Kommentar gefunden, aber noch keine Kommentar-ID");
-
                 return;
             }
 
@@ -133,10 +142,7 @@ function observeCommentSection(commentSection) {
 
             const videoId = getVideoId();
 
-            console.log("Video-ID:", videoId);
-            console.log("Kommentar-ID:", commentId);
-
-            sendCommentToBackend(videoId, commentId);
+            sendCommentToBackend(videoId, commentId, domParentId);
         });
     }
 

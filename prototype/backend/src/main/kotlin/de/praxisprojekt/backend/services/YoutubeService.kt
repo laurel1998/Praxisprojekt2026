@@ -61,6 +61,8 @@ class YoutubeService {
                     publishedAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                         .parse(commentSnippet["publishedAt"].asText()),
                     totalReplyCount = snippet["totalReplyCount"].asInt(),
+                    parentId = null,
+                    domParentId = null,
                     testScore = getTestScore(comment["id"].asText())
                 )
             )
@@ -68,7 +70,7 @@ class YoutubeService {
         return comments
     }
     
-    fun getComment(videoId: String, commentId: String): Kommentar {
+    fun getComment(videoId: String, commentId: String, domParentId: String?): Kommentar {
 
         val response = restClient.get()
             .uri("https://www.googleapis.com/youtube/v3/comments") {
@@ -95,6 +97,8 @@ class YoutubeService {
             publishedAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
                 .parse(snippet["publishedAt"].asText()),
             totalReplyCount = 0,
+            parentId = snippet["parentId"]?.asText(),
+            domParentId = domParentId,
             testScore = getTestScore(item["id"].asText())
         )
     }

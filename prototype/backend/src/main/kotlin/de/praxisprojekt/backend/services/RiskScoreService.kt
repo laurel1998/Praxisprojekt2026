@@ -3,11 +3,16 @@ package de.praxisprojekt.backend.services
 import de.praxisprojekt.backend.models.RiskScore
 import de.praxisprojekt.backend.models.Kommentar
 import de.praxisprojekt.backend.models.YoutubeChannel
+import de.praxisprojekt.backend.services.YoutubeService
+import de.praxisprojekt.backend.services.SentimentClient
 import org.springframework.stereotype.Service
 import java.util.Date
 
 @Service
-class RiskScoreService {
+class RiskScoreService(
+    private val sentimentClient: SentimentClient,
+    private val youtubeService: YoutubeService
+) {
 
     fun calculateRiskScore(
         channel: YoutubeChannel,
@@ -22,13 +27,22 @@ class RiskScoreService {
         score += channelDescription(channel)
         score += interactionIntensity(currentComment, comments)
         score += links(currentComment)
-        
+        score += ttr(currentComment)
+        val sentimentPoints = sentiment(currentComment, comments)
+        score += sentimentPoints
+        score += responseSpeed(currentComment)
+        score += textSimilarity(currentComment,comments)
+
         //Debug-Ausgabe
         println("Publication Rate: ${publicationRate(channel)}")
         println("Reach: ${reach(viewCount, channel.subscriberCount)}")
         println("Description: ${channelDescription(channel)}")
         println("Interaction Intensity: ${interactionIntensity(currentComment, comments)}")
         println("Links: ${links(currentComment)}")
+        println("TTR: ${ttr(currentComment)}")
+        println("Sentiment: $sentimentPoints")
+        println("Antwortgeschwindigkeit: ${responseSpeed(currentComment)}")
+        println("wiederholungsgrad: ${textSimilarity(currentComment,comments)}")
         println("Risk Score: $score")
         
         return RiskScore(
@@ -89,16 +103,6 @@ class RiskScoreService {
         }
 
         val likeRatio = currentComment.likeCount / averageLikes
-        
-        //Debug-Ausgabe
-        println("Current comment likes: ${currentComment.likeCount}")
-        println("Comparison comments: ${comparisonComments.size}")
-        println("Average likes: $averageLikes")
-        println("Like ratio: $likeRatio")
-        println("Current comment ID: ${currentComment.id}")
-        println("Comparison contains current comment: ${
-            comparisonComments.any { it.id == currentComment.id }
-        }")
 
         return when {
             likeRatio < 3 -> 0
@@ -119,5 +123,115 @@ class RiskScoreService {
             linkCount == 1 -> 1
             else -> 2
         }
+    }
+    
+    private fun ttr(comment: Kommentar): Int {
+        
+        // Regulärer Ausdruck: Folge aus Buchstaben und/oder Zahlen
+        val words = Regex("""[\p{L}\p{N}]+""")
+            .findAll(comment.text.lowercase())  // for case insensitivity
+            .map { it.value }
+            .toList()
+
+        if (words.size < 10) {
+            return 0
+        }
+
+        val ttr = words.toSet().size.toDouble() / words.size
+
+        return when {
+            ttr > 0.80 -> 0
+            ttr >= 0.60 -> 1
+            else -> 2
+        }
+    }
+    
+    private fun sentiment(
+        currentComment: Kommentar,
+        comments: List<Kommentar>
+    ): Int {
+
+        val currentSentiment = sentimentClient.analyze(currentComment.text).sentiment
+
+        val referenceComments = comments
+            .filter {
+                it.id != currentComment.id && it.text.isNotBlank()
+            }
+            .take(20)
+
+        if (referenceComments.isEmpty()) {
+            println("Sentiment: Keine Referenzkommentare vorhanden.")
+            return 0
+        }
+
+        val referenceSentiments = referenceComments.map {
+            sentimentClient.analyze(it.text).sentiment
+        }
+
+        val differentSentiments = referenceSentiments.count {
+            it != currentSentiment
+        }
+
+        val rarity = differentSentiments.toDouble() / referenceSentiments.size
+
+        return if (rarity < 0.3) 1 else 0
+    }
+    
+    /*
+    "Sentiment"-Laufzeit mit unterschiedlichen Referenzmengen:
+
+    Reference Comments: 10
+    Sentiment Rarity: 0.6
+    Sentiment Laufzeit: 3309,78 ms
+    Sentiment: 0
+    Risk Score: 6
+
+
+    Reference Comments: 25
+    Sentiment Rarity: 0.6
+    Sentiment Laufzeit: 4755,37 ms
+    Sentiment: 0
+    Risk Score: 3
+
+
+    Reference Comments: 50
+    Sentiment Rarity: 0.6
+    Sentiment Laufzeit: 5841,15 ms
+    Sentiment: 0
+    Risk Score: 3
+    */
+    
+    private fun responseSpeed(
+        currentComment: Kommentar
+    ): Int {
+        val parentId = currentComment.domParentId ?: return 0
+
+        val parentComment = youtubeService.getComment(
+            currentComment.videoId,
+            parentId,
+            null
+        )
+
+        val responseTimeMinutes =
+            (currentComment.publishedAt.time - parentComment.publishedAt.time) / 60000.0
+
+        println("Response time: $responseTimeMinutes minutes")
+
+        return when {
+            responseTimeMinutes < 10 -> 2
+            responseTimeMinutes <= 30 -> 1
+            else -> 0
+        }
+    }
+    
+    private fun textSimilarity(
+        currentComment: Kommentar,
+        comments: List<Kommentar>
+    ): Int {
+        val hasDuplicate = comments.any { comment ->
+            comment.id != currentComment.id &&
+            comment.text.trim() == currentComment.text.trim()
+        }
+        return if (hasDuplicate) 2 else 0
     }
 }

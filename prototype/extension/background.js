@@ -21,6 +21,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "FETCH_COMMENT") {
         url.searchParams.set("commentId", message.commentId);
+        url.searchParams.set("domParentId", message.domParentId ?? "");
+
     }
 
     fetch(url)

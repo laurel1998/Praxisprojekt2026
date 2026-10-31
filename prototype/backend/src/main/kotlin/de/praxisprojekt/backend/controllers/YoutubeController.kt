@@ -27,8 +27,9 @@ class YouTubeController(
     @GetMapping("/comment")
     fun getComment(
         @RequestParam videoId: String,
-        @RequestParam commentId: String
+        @RequestParam commentId: String,
+        @RequestParam(required = false) domParentId: String?
     ): Kommentar {
-        return youtubeService.getComment(videoId, commentId)
+        return youtubeService.getComment(videoId, commentId, domParentId)
     }
 }

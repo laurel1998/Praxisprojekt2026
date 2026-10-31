@@ -10,5 +10,7 @@ data class Kommentar(
     val likeCount: Int,
     val publishedAt: Date,
     val totalReplyCount: Int,
+    val parentId: String? = null, 
+    val domParentId: String? = null,        
     val testScore: Int = 0
 )

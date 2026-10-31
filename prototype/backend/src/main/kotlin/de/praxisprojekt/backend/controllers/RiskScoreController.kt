@@ -18,13 +18,14 @@ class RiskScoreController(
     @GetMapping
     fun getRiskScore(@RequestParam channelId: String,
                      @RequestParam videoId: String,
-                     @RequestParam commentId: String
+                     @RequestParam commentId: String,
+                     @RequestParam(required = false) domParentId: String?
     ): RiskScore {
         
         val channel = youtubeService.getChannel(channelId)
         val viewCount = youtubeService.getVideoViewCount(videoId)
         
-        val currentComment = youtubeService.getComment(videoId, commentId)
+        val currentComment = youtubeService.getComment(videoId, commentId, domParentId)
         val comments = youtubeService.getComments(videoId)
         
         return riskScoreService.calculateRiskScore(
