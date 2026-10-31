@@ -83,7 +83,6 @@ class YoutubeService {
             .body(String::class.java)
             ?: throw IllegalStateException("Keine Antwort von der YouTube API")
 
-        println(response)
 
         val item = objectMapper.readTree(response)["items"][0]
         val snippet = item["snippet"]

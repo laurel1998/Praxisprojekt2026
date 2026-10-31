@@ -3,13 +3,21 @@
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records)](docs/ADR/) dokumentiert.
 
+## [1.4.0] – 31.10.2026
+### Hinzugefügt
+- [Risk Score Berechnung](/prototype/backend/src/main/kotlin/de/praxisprojekt/backend/services/RiskScoreService.kt) implementiert
+
+### Bearbeitet
+- [ADR 02: Datenzugriff](/docs/ADR/02-adr-datenzugriffsstrategie.md)
+
+
 
 ## [1.4.0] – 31.10.2026
 ### Hinzugefügt
 - Implementierung aller geplanten [Merkmale des Risk-Scores](/prototype/backend/src/main/kotlin/de/praxisprojekt/backend/services/RiskScoreService.kt)  
 - Integration [XLM-Modell zur Sentiment-Analyse](/prototype/sentiment-service/)
 
-**### Geändert**
+### Bearbeitet
 - Anpassung der Sentiment-Bewertung im [RiskScore](/docs/ADR/Artefakte/04-RiskScore.png) und im [Bewertungskatalog](/docs/ADR/Artefakte/04-Bewertungskatalog.png)
 
 

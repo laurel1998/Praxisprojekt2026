@@ -3,6 +3,8 @@
 **Status:** entschieden  
 **Datum:** 05-08-2026
 
+**Anpassung:** 31-10-2026
+
 ---
 
 ## Kontext
@@ -45,3 +47,9 @@ Die API stellt die für die Merkmalsanalyse benötigten Informationen wie Kommen
 ## Probleme
 
 Die Merkmalsanalyse ist auf die über die YouTube API verfügbaren Daten beschränkt. Insbesondere steht keine vollständige Interaktionshistorie einzelner Nutzer zur Verfügung. Merkmale, die langfristige Aktivitätsmuster oder plattformübergreifende Beziehungen erfordern, können daher im MVP nur eingeschränkt berücksichtigt werden.
+
+--
+
+## Hinweis zur Umsetzung:
+
+Im Verlauf der Implementierung hat sich gezeigt, dass die YouTube API nicht alle für die Merkmalsanalyse benötigten Informationen bereitstellt. Daher wurde die ursprüngliche Entscheidung um eine ergänzende DOM-Auswertung erweitert, um insbesondere die tatsächliche Verschachtelung von Kommentarantworten zu erfassen.

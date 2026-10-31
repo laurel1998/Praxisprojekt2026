@@ -7,12 +7,21 @@ import de.praxisprojekt.backend.services.YoutubeService
 import de.praxisprojekt.backend.services.SentimentClient
 import org.springframework.stereotype.Service
 import java.util.Date
+import kotlin.math.roundToInt
 
 @Service
 class RiskScoreService(
     private val sentimentClient: SentimentClient,
     private val youtubeService: YoutubeService
 ) {
+    
+    //Hier anpassen, wenn sich max. Punkte je Kombination veraendern!!!
+    private val maxPointsPerCategory = mapOf(
+        "channelProfile" to 5,
+        "commentProfile" to 4,
+        "languageProfile" to 3,
+        "commentActivity" to 4
+    )
 
     fun calculateRiskScore(
         channel: YoutubeChannel,
@@ -20,34 +29,134 @@ class RiskScoreService(
         currentComment: Kommentar,
         comments: List<Kommentar>
     ): RiskScore {
-        var score = 0
         
-        score += publicationRate(channel)
-        score += reach(viewCount, channel.subscriberCount)
-        score += channelDescription(channel)
-        score += interactionIntensity(currentComment, comments)
-        score += links(currentComment)
-        score += ttr(currentComment)
+        //var score = 0
+        
+        val publicationRatePoints = publicationRate(channel)
+        val reachPoints = reach(viewCount, channel.subscriberCount)
+        val descriptionPoints = channelDescription(channel)
+        
+        val interactionPoints = interactionIntensity(currentComment, comments)
+        val linkPoints = links(currentComment)
+        
+        val ttrPoints = ttr(currentComment)
         val sentimentPoints = sentiment(currentComment, comments)
-        score += sentimentPoints
-        score += responseSpeed(currentComment)
-        score += textSimilarity(currentComment,comments)
+        
+        val responseSpeedPoints = responseSpeed(currentComment)
+        val similarityPoints = textSimilarity(currentComment,comments)
 
-        //Debug-Ausgabe
-        println("Publication Rate: ${publicationRate(channel)}")
-        println("Reach: ${reach(viewCount, channel.subscriberCount)}")
-        println("Description: ${channelDescription(channel)}")
-        println("Interaction Intensity: ${interactionIntensity(currentComment, comments)}")
-        println("Links: ${links(currentComment)}")
-        println("TTR: ${ttr(currentComment)}")
+        //Debug-Ausgaben
+        println("Publication Rate: $publicationRatePoints")
+        println("Reach: $reachPoints")
+        println("Description: $descriptionPoints")
+        println("Interaction Intensity: $interactionPoints")
+        println("Links: $linkPoints")
+        println("TTR: $ttrPoints")
         println("Sentiment: $sentimentPoints")
-        println("Antwortgeschwindigkeit: ${responseSpeed(currentComment)}")
-        println("wiederholungsgrad: ${textSimilarity(currentComment,comments)}")
-        println("Risk Score: $score")
+        println("Antwortgeschwindigkeit: $responseSpeedPoints")
+        println("wiederholungsgrad: $similarityPoints")
+        
+        val channelProfile = publicationRatePoints + reachPoints + descriptionPoints
+        val commentProfile = interactionPoints + linkPoints
+        val languageProfile = ttrPoints + sentimentPoints
+        val commentActivity = responseSpeedPoints + similarityPoints
+        
+        val rawPoints = channelProfile + commentProfile + languageProfile + commentActivity
+        
+        val combinationBonus = calculateCombinationBonus(
+            channelProfile,
+            commentProfile,
+            languageProfile,
+            commentActivity
+        )
+        
+        val categoryBonus = calculateCategoryBonus(
+        channelProfile,
+        commentProfile,
+        languageProfile,
+        commentActivity
+        )
+        
+        val totalPoints = rawPoints + combinationBonus + categoryBonus
+        val score = (totalPoints / 37.0 * 100).roundToInt()
+        // Hier anpassen, wenn sich max. Punkteanzahl = 37 veraendert!!!
+        // max. Rohpunkt = 16
+        // max. Kombinationspunkte = 12
+        // max. Kategoriepunkte = 9
+
+        //Debug-Ausgaben
+        println("Raw Points: $rawPoints")
+        println("Combination Bonus: $combinationBonus")
+        println("Category Bonus: $categoryBonus")
+        println("Total Points: $totalPoints / 37")
+        println("Risk Score: $score %")
         
         return RiskScore(
             score = score
         )
+    }
+    
+    private fun calculateCombinationBonus(
+        channelProfile: Int,
+        commentProfile: Int,
+        languageProfile: Int,
+        commentActivity: Int
+    ): Int {
+        
+        val categoryPoints = listOf(
+        channelProfile,
+        commentProfile,
+        languageProfile,
+        commentActivity
+        )
+        
+        val maxPoints = maxPointsPerCategory.values.toList()
+
+        // zip() verbindet zwei Listen anhand ihrer Position zu Paaren z.B. [(4, 5), (2, 4), (2, 3), (3, 4)]
+        // sumOf() geht diese Paare nacheinander durch und addiert sie
+        
+        return categoryPoints.zip(maxPoints).sumOf { (points, max) ->
+            val percentage = points.toDouble() / max
+
+            when {
+                percentage < 0.25 -> 0
+                percentage < 0.50 -> 1
+                percentage < 0.75 -> 2
+                else -> 3
+            }
+        }
+    }
+    
+    private fun calculateCategoryBonus(
+        channelProfile: Int,
+        commentProfile: Int,
+        languageProfile: Int,
+        commentActivity: Int
+    ): Int {
+        
+        val maxPoints = maxPointsPerCategory.values.toList()
+
+        val categoryPoints = listOf(
+            channelProfile,
+            commentProfile,
+            languageProfile,
+            commentActivity
+        )
+
+        // count() zählt, wie viele Elemente eine bestimmte Bedingung erfüllen
+        // -> (Bedingung: mehr als 75% der Kombi-Punkte)
+        
+        val maxBonusCount = categoryPoints.zip(maxPoints).count { (points, max) -> 
+            points.toDouble() / max >= 0.75
+        }
+
+        return when (maxBonusCount) {
+            0, 1 -> 0
+            2 -> 3
+            3 -> 6
+            4 -> 9
+            else -> 0
+        }
     }
     
     private fun publicationRate(channel: YoutubeChannel): Int {
