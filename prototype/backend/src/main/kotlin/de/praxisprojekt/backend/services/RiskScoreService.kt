@@ -266,7 +266,7 @@ class RiskScoreService(
             .filter {
                 it.id != currentComment.id && it.text.isNotBlank()
             }
-            .take(20)
+            .take(10) // Anzahl Vergleichskommentare stark begrenzt für schnellere Laufzeit 
 
         if (referenceComments.isEmpty()) {
             println("Sentiment: Keine Referenzkommentare vorhanden.")

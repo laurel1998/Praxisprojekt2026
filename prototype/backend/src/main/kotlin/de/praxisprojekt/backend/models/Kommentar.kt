@@ -12,5 +12,4 @@ data class Kommentar(
     val totalReplyCount: Int,
     val parentId: String? = null, 
     val domParentId: String? = null,        
-    val testScore: Int = 0
 )

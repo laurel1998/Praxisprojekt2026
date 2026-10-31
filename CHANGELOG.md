@@ -3,6 +3,17 @@
 Alle nennenswerten Änderungen an diesem Projekt werden in dieser Datei dokumentiert.
 Architekturentscheidungen sind über ADR-Dateien [(Architecture Decision Records)](docs/ADR/) dokumentiert.
 
+
+## [1.5.0] – 01.11.2026
+Abschluss V1 Prototyp: MVP implementiert und erfolgreich [getestet](/docs/PoC/Artefakte/Beispiel-RiskScore(Quelle%20httpswww.youtube.comwatchv=3URtTIdnXIk).png)
+
+### Bearbeitet
+- 0.4.0 - [Prototyp](/prototype/): 
+  - Visualsierung des Risk Scores implementiert
+  - [popup.html:](/prototype/extension/popup.html) Einordnung mit [Legende](/docs/PoC/Artefakte/Legende.png) ergaenzt
+
+
+
 ## [1.4.0] – 31.10.2026
 ### Hinzugefügt
 - [Risk Score Berechnung](/prototype/backend/src/main/kotlin/de/praxisprojekt/backend/services/RiskScoreService.kt) implementiert

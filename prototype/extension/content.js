@@ -57,28 +57,47 @@ function sendCommentToBackend(videoId, commentId, domParentId) {
                 throw new Error(response?.error || "Keine Backend-Antwort");
             }
 
-            const data = response.data;
+            const comment = response.data;
 
-            if (commentId === data.id) {
-                addTestPoint(commentId, data.testScore);
+            if (commentId !== comment.id) {
+                return;
             }
+
+            return chrome.runtime.sendMessage({
+                type: "FETCH_RISK_SCORE",
+                videoId: videoId,
+                channelId: comment.authorChannelId,
+                commentId: commentId,
+                domParentId: domParentId
+            });
+        })
+        .then(response => {
+            if (!response) return;
+
+            if (!response.ok) {
+                throw new Error(response.error || "Risk Score konnte nicht geladen werden");
+            }
+
+            const score = response.data.score;
+
+            addRiskPoint(commentId, score);
         })
         .catch(error => {
             console.error("Fehler beim Laden des Kommentars:", error);
         });
 }
 
-function getTestColor(score) {
-    if (score === 0) {
+function getRiskColor(score) {
+    if (score < 34) {
         return "green";
     }
-    if (score === 1) {
+    if (score < 67) {
         return "orange";
     }
     return "red";
 }
 
-function addTestPoint(commentId, score) {
+function addRiskPoint(commentId, score) {
     const comments = document.querySelectorAll(
         "ytd-comment-thread-renderer"
     );
@@ -97,7 +116,7 @@ function addTestPoint(commentId, score) {
 
         testPoint.className = "risk-score-test-point";
         testPoint.textContent = "●";
-        testPoint.style.color = getTestColor(score);
+        testPoint.style.color = getRiskColor(score);
         testPoint.style.fontSize = "16px";
         testPoint.style.marginRight = "8px";
 
@@ -108,7 +127,7 @@ function addTestPoint(commentId, score) {
         }
 
         console.log(
-            "Testpunkt eingefügt:",
+            "Risk Score visualisiert",
             commentId,
             "Score:",
             score

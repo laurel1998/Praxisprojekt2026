@@ -6,16 +6,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     if (message.type !== "FETCH_COMMENTS" &&
-        message.type !== "FETCH_COMMENT") {
+        message.type !== "FETCH_COMMENT" &&
+        message.type !== "FETCH_RISK_SCORE"
+    ) {
         return;
     }
 
-    const url = new URL(
-        message.type === "FETCH_COMMENTS"
-            ? "/api/youtube/comments"
-            : "/api/youtube/comment",
-        "http://localhost:8080"
-    );
+    let endpoint;
+
+    switch (message.type) {
+        case "FETCH_COMMENTS":
+            endpoint = "/api/youtube/comments";
+            break;
+
+        case "FETCH_COMMENT":
+            endpoint = "/api/youtube/comment";
+            break;
+
+        case "FETCH_RISK_SCORE":
+            endpoint = "/api/risk-score";
+            break;
+    }
+
+    const url = new URL(endpoint, "http://localhost:8080");
 
     url.searchParams.set("videoId", message.videoId);
 
@@ -23,6 +36,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         url.searchParams.set("commentId", message.commentId);
         url.searchParams.set("domParentId", message.domParentId ?? "");
 
+    }
+
+    if (message.type === "FETCH_RISK_SCORE") {
+        url.searchParams.set("channelId", message.channelId);
+        url.searchParams.set("commentId", message.commentId);
+
+        if (message.domParentId) {
+            url.searchParams.set("domParentId", message.domParentId);
+        }
     }
 
     fetch(url)

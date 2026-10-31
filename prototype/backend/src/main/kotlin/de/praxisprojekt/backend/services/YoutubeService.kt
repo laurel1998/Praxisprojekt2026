@@ -17,17 +17,6 @@ class YoutubeService {
     
     private val apiKey = System.getenv("YOUTUBE_API_KEY")
         ?: throw IllegalStateException("YOUTUBE_API_KEY ist nicht gesetzt")
-
-    private fun getTestScore(commentId: String): Int {
-        
-        val digits = commentId.filter { it.isDigit() }.toSet()
-
-        return when {
-            '7' in digits -> 2
-            digits.size > 1 -> 1
-            else -> 0
-        }
-    }
     
     fun getComments(videoId: String): List<Kommentar> {
 
@@ -62,8 +51,7 @@ class YoutubeService {
                         .parse(commentSnippet["publishedAt"].asText()),
                     totalReplyCount = snippet["totalReplyCount"].asInt(),
                     parentId = null,
-                    domParentId = null,
-                    testScore = getTestScore(comment["id"].asText())
+                    domParentId = null
                 )
             )
         }
@@ -97,9 +85,8 @@ class YoutubeService {
                 .parse(snippet["publishedAt"].asText()),
             totalReplyCount = 0,
             parentId = snippet["parentId"]?.asText(),
-            domParentId = domParentId,
-            testScore = getTestScore(item["id"].asText())
-        )
+            domParentId = domParentId
+            )
     }
     
     fun getChannel(channelId: String): YoutubeChannel {
