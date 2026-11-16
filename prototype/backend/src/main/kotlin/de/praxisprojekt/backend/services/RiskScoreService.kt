@@ -25,7 +25,6 @@ class RiskScoreService(
 
     fun calculateRiskScore(
         channel: YoutubeChannel,
-        viewCount: Long,
         currentComment: Kommentar,
         comments: List<Kommentar>
     ): RiskScore {
@@ -33,7 +32,7 @@ class RiskScoreService(
         //var score = 0
         
         val publicationRatePoints = publicationRate(channel)
-        val reachPoints = reach(viewCount, channel.subscriberCount)
+        val reachPoints = reach(channel)
         val descriptionPoints = channelDescription(channel)
         
         val interactionPoints = interactionIntensity(currentComment, comments)
@@ -175,12 +174,16 @@ class RiskScoreService(
         }
     }
     
-    private fun reach(viewCount: Long, subscriberCount: Long): Int {
+    private fun reach(channel: YoutubeChannel): Int {
+        val averageViews = if (channel.videoCount > 0) {
+            channel.viewCount / channel.videoCount
+        } else {
+            0
+        }
+
         return when {
-            viewCount < 1000 -> 0
-            viewCount < 10000 && subscriberCount > 61 -> 0
-            viewCount < 10000 && subscriberCount <= 61 -> 1
-            viewCount >= 10000 && subscriberCount > 61 -> 1
+            averageViews < 10_000 -> 0
+            channel.subscriberCount >= 100 -> 1
             else -> 2
         }
     }

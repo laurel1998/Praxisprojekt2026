@@ -112,31 +112,17 @@ class YoutubeService {
         
         val subscriberCount = item["statistics"]["subscriberCount"].asLong()
         
+        val viewCount = item["statistics"]["viewCount"].asLong()
+        
         val description = item["snippet"]["description"].asText()
 
         return YoutubeChannel(
             publishedAt = publishedAt,
             videoCount = videoCount,
             subscriberCount = subscriberCount,
+            viewCount = viewCount,
             description = description
         )
     }
     
-    fun getVideoViewCount(videoId: String): Long {
-
-        val response = restClient.get()
-            .uri("https://www.googleapis.com/youtube/v3/videos") {
-                it.queryParam("part", "statistics")
-                    .queryParam("id", videoId)
-                    .queryParam("key", apiKey)
-                    .build()
-            }
-            .retrieve()
-            .body(String::class.java)
-            ?: throw IllegalStateException("Keine Antwort von der YouTube API")
-
-        val item = objectMapper.readTree(response)["items"][0]
-
-        return item["statistics"]["viewCount"].asLong()
-    }
 }

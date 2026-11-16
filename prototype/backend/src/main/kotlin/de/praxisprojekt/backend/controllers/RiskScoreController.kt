@@ -23,14 +23,12 @@ class RiskScoreController(
     ): RiskScore {
         
         val channel = youtubeService.getChannel(channelId)
-        val viewCount = youtubeService.getVideoViewCount(videoId)
         
         val currentComment = youtubeService.getComment(videoId, commentId, domParentId)
         val comments = youtubeService.getComments(videoId)
         
         return riskScoreService.calculateRiskScore(
             channel, 
-            viewCount,
             currentComment,
             comments)
     }
